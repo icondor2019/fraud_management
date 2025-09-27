@@ -1,11 +1,12 @@
 from enum import Enum
 from typing import Dict
-import random
+
 
 class Decision(Enum):
     APPROVED = "approved"
     REJECTED = "rejected"
     REVIEW = "review"
+
 
 class FraudService:
     def __init__(self):

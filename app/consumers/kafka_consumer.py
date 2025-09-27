@@ -7,7 +7,7 @@ class KafkaConsumerWrapper:
     def __init__(self, topic):
         self.topic = topic
         self.group_id = 'fraud_risk_group'
-        self.bootstrap_servers =['localhost:9092']
+        self.bootstrap_servers = ['localhost:9092']
         self.consumer = None
 
     def start_consumer(self, message_processor):
