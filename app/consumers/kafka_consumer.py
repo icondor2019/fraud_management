@@ -1,13 +1,14 @@
-from kafka import KafkaConsumer
-from loguru import logger
 import traceback
+from loguru import logger
+from kafka import KafkaConsumer
+from configuration.settings import settings
 
 
 class KafkaConsumerWrapper:
     def __init__(self, topic):
         self.topic = topic
         self.group_id = 'fraud_risk_group'
-        self.bootstrap_servers = ['localhost:9092']
+        self.bootstrap_servers = settings.KAFKA_BOOTSTRAP_SERVER
         self.consumer = None
 
     def start_consumer(self, message_processor):

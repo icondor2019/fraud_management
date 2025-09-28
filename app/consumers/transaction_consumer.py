@@ -1,20 +1,22 @@
 import json
 import traceback
 from loguru import logger
-from app.services.test_fraud_service import FraudService
+from services.test_fraud_service import FraudService
+from producers.decision_producer import TransferDecisionProducer
 
 
 def transaction_processor(raw_message):
     try:
-        header = dict(raw_message.headers)
-        logger.debug(f"Message headers: {header}")
         message = json.loads(raw_message.value)
         logger.debug(f"Processing transaction: {message}")
         if message['action'] == 'created':
             transaction_data = message['body']
-            fraud_service = FraudService()
-            risk_assessment = fraud_service.assess_risk(transaction_data)
-            logger.debug(f"Risk assessment result: {risk_assessment}")
+            transaction_uuid = transaction_data['transaction_uuid']
+
+            # Perform fraud assessment
+            risk_assessment = FraudService().assess_risk(transaction_data)
+            TransferDecisionProducer().send_decision(transaction_uuid=transaction_uuid,
+                                                     decision=risk_assessment)
         else:
             logger.debug(f"Ignored message with action: {message['action']}")
     except json.JSONDecodeError as e:
