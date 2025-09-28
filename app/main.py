@@ -1,5 +1,3 @@
-import json
-from kafka import KafkaConsumer
 from consumers.kafka_consumer import KafkaConsumerWrapper
 from consumers.transaction_consumer import transaction_processor
 
